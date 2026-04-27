@@ -36,3 +36,49 @@ export const login = async (req, res) => {
         res.status(500).json({ message: "Server Error" });
     }
 };
+
+
+
+export const updateUser = async (req, res) => {
+    try {
+        const { id } = req.params; // URL se ID uthayenge (e.g., /update/123)
+        const dataToUpdate = req.body;
+
+        const updatedUser = await User.findByIdAndUpdate(id, dataToUpdate, {
+            new: true, // Naya updated document return karega
+            runValidators: true // Model ke rules (like email validation) check karega
+        });
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User nahi mila!" });
+        }
+
+        res.status(200).json({
+            message: "Profile update ho gayi hai",
+            user: updatedUser
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+
+
+
+
+export const deleteUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const deletedUser = await User.findByIdAndDelete(id);
+
+        if (!deletedUser) {
+            return res.status(404).json({ message: "User pehle se hi mojud nahi hai ya delete ho chuka hai" });
+        }
+
+        res.status(200).json({ message: "Account successfully delete kar diya gaya hai" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};

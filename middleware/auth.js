@@ -5,6 +5,9 @@ export const verifyToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
+    console.log("POSTMAN SE AYA TOKEN:", token);
+    console.log("SERVER KA SECRET KEY:", process.env.JWT_SECRET);
+
     if (!token) {
         return res.status(401).json({ message: "Access Denied: Token nahi mila!" });
     }
